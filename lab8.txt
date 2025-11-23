@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <?php 
+    define("DB_SERVER",'localhost');
+    define("DB_USER",'root');
+    define("DB_PASS",'');
+    define("DB_NAME",'studentdb');
+    $con=mysqli_connect(DB_SERVER,DB_USER,DB_PASS,DB_NAME);
+
+    if(mysqli_connect_errno())
+    {
+        echo "Connection Failed" .mysqli_connect_error();
+    }
+    else{
+        echo "Succesfully Conecetd";
+    }
+
+    ?>
+</head>
+<body>
+    <?php
+    $query=mysqli_query($con,'select * from studen');
+    $student=mysqli_fetch_all($query,MYSQLI_ASSOC);
+    ?>
+
+    <table>
+        <tr>
+            <th>SI NO</th>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>DEPT</th>
+            <th>ADDRESS</th>
+        </tr>
+   
+    <?php for($i=0;$i<sizeof($student);$i++){?>
+        <tr>
+            <td><?php echo $i+1; ?></td>
+            <td><?php echo $student[$i]["ID"]; ?></td>
+            <td><?php echo $student[$i]["NAME"]; ?></td>
+            <td><?php echo $student[$i]["DEPT"]; ?></td>
+            <td><?php echo $student[$i]["ADDRESS"]; ?></td>
+            
+        </tr>
+       <?php } ?>
+        </table>
+
+        <?php 
+        for($i=0;$i<sizeof($student);$i++){
+            $min=$i;
+            for($j=$i+1;$j<sizeof($student);$j++){
+                if($student[$j]["ID"]>$student[$min]["USN"]){
+                    $min=$j;
+                }
+                $temp=$student[$i];
+                $student[$i]=$student[$min];
+                $student[$min]=$temp;
+            }
+        }
+        ?>
+    
+        <table>
+        <tr>
+            <th>SI NO</th>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>DEPT</th>
+            <th>ADDRESS</th>
+        </tr>
+   
+    <?php for($i=0;$i<sizeof($student);$i++){?>
+        <tr>
+            <td><?php echo $i+1; ?></td>
+            <td><?php echo $student[$i]["ID"]; ?></td>
+            <td><?php echo $student[$i]["NAME"]; ?></td>
+            <td><?php echo $student[$i]["DEPT"]; ?></td>
+            <td><?php echo $student[$i]["ADDRESS"]; ?></td>
+            
+        </tr>
+       <?php } ?>
+    </table>
+</body>
+</html>
